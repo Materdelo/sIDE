@@ -3,27 +3,46 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class SideBar extends JPanel implements ListSelectionListener {
-    DefaultListModel data;
-    JList lst ;
-    SideBar(/*FileHandler fh, ContentBox cont */){
-        data = new DefaultListModel();
-        data.addElement("Plik1.txt");
-        data.addElement("Plik2.txt");
-        data.addElement("Plik3.txt");
-        data.addElement("Dokumentacja.txt");
-        lst = new JList(data);
-        lst.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        lst.setLayoutOrientation(JList.VERTICAL);
-        lst.setSelectedIndex(2);
-        lst.setVisibleRowCount(3);
-        lst.addListSelectionListener(this);
-        JScrollPane scrpnl = new JScrollPane(lst);
+    DefaultListModel defaultListModel;
+    JList list ;
+    FsUtils fsUtils;
+    ContentBox contentBox;
+    JScrollPane scrollPane;
 
-        this.add(scrpnl);
+    SideBar(FsUtils fsUtils, ContentBox contentBox){
+        this.contentBox = contentBox;
+        this.fsUtils = fsUtils;
+
+        defaultListModel =  new DefaultListModel();
+        list = new JList(defaultListModel);
+
+        defaultListModel.addElement("App.java");
+        defaultListModel.addElement("ContentBox.java");
+        defaultListModel.addElement("Plik3.txt");
+        defaultListModel.addElement("Dokumentacja.txt");
+
+        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setSelectedIndex(2);
+        list.setVisibleRowCount(Math.min(defaultListModel.getSize(), 15));
+        list.addListSelectionListener(this);
+        scrollPane = new JScrollPane(list);
+
+        this.add(scrollPane);
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-
+        Object src = e.getSource();
+        if (src == list) {
+            if (!e.getValueIsAdjusting()) {
+                if (list.getSelectedIndex() != -1){
+                    FsUtils fsUtils = new FsUtils();
+                    String fileName = defaultListModel.getElementAt(list.getSelectedIndex()).toString();
+                    String content = fsUtils.readFile(fileName);
+                    this.contentBox.overWrite(content);
+                }
+            }
+        }
     }
 }

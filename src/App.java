@@ -2,29 +2,42 @@ import javax.swing.*;
 import java.awt.*;
 
 public class App {
-    JFrame box = new JFrame();
-    JPanel pnl = new JPanel();
-    JPanel Toppnl = new JPanel();
+    JFrame win = new JFrame();
+    JPanel panel, topPanel;
+    ToolBar toolBar;
+    MainMenu menu;
+    SideBar sideBar;
+    ContentBox contentBox;
+    FsUtils fsUtils;
+    Container container;
     App() {
-        MainMenu menu = new MainMenu(box, pnl);
-        menu.setAlignmentX(Component.LEFT_ALIGNMENT);
+        fsUtils = new FsUtils();
+        contentBox = new ContentBox();
+        topPanel = new JPanel();
+        panel = new JPanel(new BorderLayout());
+        sideBar = new SideBar(fsUtils, contentBox);
+        toolBar = new ToolBar(menu);
+        menu = new MainMenu(win, panel);
 
-        ToolBar toolBar = new ToolBar(menu);
+        menu.setAlignmentX(Component.LEFT_ALIGNMENT);
         toolBar.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        SideBar sideBar = new SideBar();
-        pnl.add(sideBar);
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.add(menu);
+        topPanel.add(toolBar);
 
-        Toppnl.setLayout(new BoxLayout(Toppnl, BoxLayout.Y_AXIS));
-        Toppnl.add(menu);
-        Toppnl.add(toolBar);
+        container = contentBox.get();
 
-        box.add(Toppnl, BorderLayout.PAGE_START);
-        box.add(pnl, BorderLayout.LINE_START);
-        box.setVisible(true);
-        box.setSize(640, 480);
-        box.setTitle("sIDE");
-        box.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        panel.add(sideBar);
+        panel.add(container);
+
+        win.add(topPanel, BorderLayout.PAGE_START);
+        win.add(panel, BorderLayout.CENTER);
+        win.add(sideBar, BorderLayout.LINE_START);
+        win.setVisible(true);
+        win.setSize(640, 480);
+        win.setTitle("sIDE");
+        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public static void main(String[] args) {
         new App();
