@@ -16,8 +16,8 @@ public class App {
         topPanel = new JPanel();
         panel = new JPanel(new BorderLayout());
         sideBar = new SideBar(fsUtils, contentBox);
-        toolBar = new ToolBar(menu);
         menu = new MainMenu(win, panel);
+        toolBar = new ToolBar(menu, fsUtils);
 
         menu.setAlignmentX(Component.LEFT_ALIGNMENT);
         toolBar.setAlignmentX(Component.LEFT_ALIGNMENT);

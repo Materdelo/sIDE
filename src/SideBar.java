@@ -3,7 +3,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class SideBar extends JPanel implements ListSelectionListener {
-    DefaultListModel defaultListModel;
+    static DefaultListModel defaultListModel;
     JList list ;
     FsUtils fsUtils;
     ContentBox contentBox;
@@ -24,7 +24,7 @@ public class SideBar extends JPanel implements ListSelectionListener {
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.VERTICAL);
         list.setSelectedIndex(2);
-        list.setVisibleRowCount(Math.min(defaultListModel.getSize(), 15));
+        list.setVisibleRowCount(10);
         list.addListSelectionListener(this);
         scrollPane = new JScrollPane(list);
 
@@ -37,7 +37,6 @@ public class SideBar extends JPanel implements ListSelectionListener {
         if (src == list) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedIndex() != -1){
-                    FsUtils fsUtils = new FsUtils();
                     String fileName = defaultListModel.getElementAt(list.getSelectedIndex()).toString();
                     String content = fsUtils.readFile(fileName);
                     this.contentBox.overWrite(content);
