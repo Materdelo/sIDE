@@ -54,5 +54,9 @@ public class ToolBar extends JToolBar {
                 fsUtils.openDirectory();
             }
         });
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {fsUtils.saveFile(fsUtils.actualFile, ContentBox.getContent());}
+        });
     }
 }

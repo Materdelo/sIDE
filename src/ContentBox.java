@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ContentBox {
-    JTextArea textArea;
+    static JTextArea textArea;
     JScrollPane scrollPane;
     ContentBox(){
         this.textArea = new JTextArea();
@@ -15,7 +15,7 @@ public class ContentBox {
     public void overWrite(String text){
         textArea.setText(text);
     }
-    public String getContent(){
+    public static String getContent(){
         return textArea.getText();
     }
     public Container get(){

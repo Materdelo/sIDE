@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class FsUtils {
     private String actualDirectory = System.getProperty("user.dir") + "/src/";
+    public String actualFile;
     public boolean openDirectory(){
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new java.io.File("."));
@@ -38,9 +39,9 @@ public class FsUtils {
     public void saveFile(String name, String content){
         try{
             String pathFile = actualDirectory + name;
-            FileWriter fw = new FileWriter(pathFile);
-            fw.write(content);
-            fw.close();
+            FileWriter fileWriter = new FileWriter(pathFile);
+            fileWriter.write(content);
+            fileWriter.close();
         } catch (IOException e) {
             System.out.println("An error occured");
             e.getStackTrace();
@@ -55,6 +56,7 @@ public class FsUtils {
             while(scanner.hasNextLine()){
                 out += scanner.nextLine() + "\n";
             }
+            actualFile = name;
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Missing file " + pathFile);
