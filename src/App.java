@@ -35,7 +35,7 @@ public class App {
         win.add(panel, BorderLayout.CENTER);
         win.add(sideBar, BorderLayout.LINE_START);
         win.setVisible(true);
-        win.setSize(960, 720);
+        win.setSize(650, 550);
         win.setTitle("sIDE");
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
