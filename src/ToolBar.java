@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class ToolBar extends JToolBar {
     JToolBar toolBar = this;
     JButton visible, floatable, browse, open, save, copy, paste, search;

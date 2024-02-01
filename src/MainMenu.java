@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,7 +6,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
     JFrame win;
     JPanel panel;
     JMenu Files, SubMenu;
-    JMenuItem New, Open, Save, Exit, Option4, Option5;
+    JMenuItem New, Open, Save, Setting, Exit, Option4, Option5;
 
     MainMenu(JFrame win, JPanel panel){
         this.panel = panel;
@@ -18,6 +17,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
         New = new JMenuItem("New");
         Open = new JMenuItem("Open");
         Save = new JMenuItem("Save");
+        Setting = new JMenuItem("Setting");
         Exit = new JMenuItem("Exit");
         Option4 = new JMenuItem("Option4");
         Option5 = new JMenuItem("Option5");
@@ -25,6 +25,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
         New.addActionListener(this);
         Open.addActionListener(this);
         Save.addActionListener(this);
+        Setting.addActionListener(this);
         Option4.addActionListener(this);
         Option5.addActionListener(this);
         Exit.addActionListener(this);
@@ -35,6 +36,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
         Files.add(New);
         Files.add(Open);
         Files.add(Save);
+        Files.add(Setting);
         Files.add(SubMenu);
         Files.add(Exit);
 
@@ -46,6 +48,9 @@ public class MainMenu extends JMenuBar implements ActionListener {
         Object src = e.getSource();
         if(src == Exit){
             win.dispose();
+        }
+        if(src == Setting){
+            new AppSettings(true);
         }
     }
 }
