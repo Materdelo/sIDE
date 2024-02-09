@@ -13,27 +13,34 @@ import java.util.HashMap;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-public class AppSettings extends JDialog{
+public class AppSettings extends JDialog {
     private final String PREFS_FILE = "appIDE.conf.xml";
     private final String NDDE = "appIDE";
     private Preferences prefs;
-    private HashMap<String, String> hashMap;
+    private HashMap<String, Boolean> hashMap;
     private Preferences prefLd;
     private JPanel mainPanel, savePanel;
     private JButton saveButton, cancelButton;
     private JLabel availableSettingLabel;
 
-    public AppSettings(){
-
-    }
-    public AppSettings(Boolean showGui){
+    public AppSettings(JFrame win) {
         readPreferences();
-        System.out.println(hashMap);
+        if(hashMap.get("Uruchom zmaksymalizowane")) {
+            win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        if(hashMap.get("Uruchom wyśrodkowane")) {
+            win.setLocationRelativeTo(null);
+        }
+    }
+
+    public AppSettings(Boolean showGui, JFrame win) {
+        readPreferences();
         saveButton = new JButton("Zapisz");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 savePreferences();
+                new AppSettings(win);
             }
         });
         cancelButton = new JButton("Odrzuć");
@@ -61,6 +68,7 @@ public class AppSettings extends JDialog{
         mainPanel.add(new GUIPanel());
         add(mainPanel);
 
+        setSetting(hashMap);
         setTitle("Settings");
         setSize(300, 500);
         setLocation(50, 25);
@@ -68,10 +76,12 @@ public class AppSettings extends JDialog{
         setModal(true);
         setVisible(true);
     }
-    private void closeWindow(){
+
+    private void closeWindow() {
         dispose();
     }
-    private void savePreferences(){
+
+    private void savePreferences() {
         prefs = Preferences.userRoot().node(NDDE);
         try {
             collectSettings(prefs);
@@ -88,8 +98,8 @@ public class AppSettings extends JDialog{
         hashMap = new HashMap<>();
         try {
             prefLd = Preferences.userRoot().node(NDDE);
-            for(String key : prefLd.keys()){
-                hashMap.put(key, prefLd.get(key, null));
+            for (String key : prefLd.keys()) {
+                hashMap.put(key, Boolean.valueOf(prefLd.get(key, null)));
             }
         } catch (BackingStoreException e) {
             throw new RuntimeException(e);
@@ -106,6 +116,22 @@ public class AppSettings extends JDialog{
                     if (subComponent instanceof JCheckBox) {
                         JCheckBox checkBox = (JCheckBox) subComponent;
                         prefs.put(checkBox.getText(), String.valueOf(checkBox.isSelected()));
+                    }
+                }
+            }
+        }
+    }
+
+    private void setSetting(HashMap<String, Boolean> hashMap) {
+        Component[] components = mainPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JPanel) {
+                JPanel subPanel = (JPanel) component;
+                Component[] subComponents = subPanel.getComponents();
+                for (Component subComponent : subComponents) {
+                    if (subComponent instanceof JCheckBox) {
+                        JCheckBox checkBox = (JCheckBox) subComponent;
+                        checkBox.setSelected(hashMap.get(checkBox.getText()));
                     }
                 }
             }

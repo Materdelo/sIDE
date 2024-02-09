@@ -50,7 +50,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
             win.dispose();
         }
         if(src == Setting){
-            new AppSettings(true);
+            new AppSettings(true, win);
         }
     }
 }

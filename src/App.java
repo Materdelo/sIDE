@@ -31,11 +31,13 @@ public class App {
         panel.add(sideBar);
         panel.add(container);
 
+
         win.add(topPanel, BorderLayout.PAGE_START);
         win.add(panel, BorderLayout.CENTER);
         win.add(sideBar, BorderLayout.LINE_START);
-        win.setVisible(true);
         win.setSize(650, 550);
+        new AppSettings(win);
+        win.setVisible(true);
         win.setTitle("sIDE");
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
