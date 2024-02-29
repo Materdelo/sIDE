@@ -22,25 +22,38 @@ public class AppSettings extends JDialog {
     private JPanel mainPanel, savePanel;
     private JButton saveButton, cancelButton;
     private JLabel availableSettingLabel;
+    private JFrame win;
 
-    public AppSettings(JFrame win) {
+    public AppSettings(JFrame win, JMenuBar jMenuBar, JToolBar jToolBar) {
+        this.win = win;
         readPreferences();
-        if(hashMap.get("Uruchom zmaksymalizowane")) {
-            win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        if(hashMap.get("Zapamiętaj rozmiar")){
+            prefLd = Preferences.userRoot().node(NDDE);
+            win.setSize(Integer.parseInt(prefLd.get("width", null)), Integer.parseInt(prefLd.get("height", null)));
         }
         if(hashMap.get("Uruchom wyśrodkowane")) {
             win.setLocationRelativeTo(null);
         }
+        if(hashMap.get("Uruchom zmaksymalizowane")) {
+            win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        if(hashMap.get("Ukryj menu główne")){
+            jMenuBar.setVisible(false);
+        }
+        if(hashMap.get("Odepnij pasek narzędziowy")){
+            jToolBar.setFloatable(true);
+        }
+
     }
 
     public AppSettings(Boolean showGui, JFrame win) {
+        this.win = win;
         readPreferences();
         saveButton = new JButton("Zapisz");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 savePreferences();
-                new AppSettings(win);
             }
         });
         cancelButton = new JButton("Odrzuć");
@@ -68,7 +81,7 @@ public class AppSettings extends JDialog {
         mainPanel.add(new GUIPanel());
         add(mainPanel);
 
-        setSetting(hashMap);
+        setCheckbox(hashMap);
         setTitle("Settings");
         setSize(300, 500);
         setLocation(50, 25);
@@ -81,10 +94,12 @@ public class AppSettings extends JDialog {
         dispose();
     }
 
-    private void savePreferences() {
+    public void savePreferences() {
         prefs = Preferences.userRoot().node(NDDE);
         try {
             collectSettings(prefs);
+            prefs.put("width", String.valueOf(win.getWidth()));
+            prefs.put("height", String.valueOf(win.getHeight()));
             OutputStream stream = new FileOutputStream(PREFS_FILE);
             prefs.exportNode(stream);
             stream.close();
@@ -122,15 +137,13 @@ public class AppSettings extends JDialog {
         }
     }
 
-    private void setSetting(HashMap<String, Boolean> hashMap) {
+    private void setCheckbox(HashMap<String, Boolean> hashMap) {
         Component[] components = mainPanel.getComponents();
         for (Component component : components) {
-            if (component instanceof JPanel) {
-                JPanel subPanel = (JPanel) component;
+            if (component instanceof JPanel subPanel) {
                 Component[] subComponents = subPanel.getComponents();
                 for (Component subComponent : subComponents) {
-                    if (subComponent instanceof JCheckBox) {
-                        JCheckBox checkBox = (JCheckBox) subComponent;
+                    if (subComponent instanceof JCheckBox checkBox) {
                         checkBox.setSelected(hashMap.get(checkBox.getText()));
                     }
                 }

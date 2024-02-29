@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class App {
     JFrame win = new JFrame();
@@ -31,12 +33,11 @@ public class App {
         panel.add(sideBar);
         panel.add(container);
 
-
         win.add(topPanel, BorderLayout.PAGE_START);
         win.add(panel, BorderLayout.CENTER);
         win.add(sideBar, BorderLayout.LINE_START);
         win.setSize(650, 550);
-        new AppSettings(win);
+        new AppSettings(win, menu, toolBar);
         win.setVisible(true);
         win.setTitle("sIDE");
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

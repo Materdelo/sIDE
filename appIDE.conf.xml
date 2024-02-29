@@ -7,14 +7,16 @@
       <map>
         <entry key="Uruchom wyśrodkowane" value="false"/>
         <entry key="Uruchom zmaksymalizowane" value="false"/>
-        <entry key="Zapamiętaj pozycję" value="true"/>
-        <entry key="Zapamiętaj rozmiar" value="true"/>
+        <entry key="Zapamiętaj pozycję" value="false"/>
+        <entry key="Zapamiętaj rozmiar" value="false"/>
         <entry key="Zapamiętaj katalog przeglądania" value="false"/>
         <entry key="Zapamiętaj otwarty plik" value="false"/>
         <entry key="Ukryj menu główne" value="false"/>
-        <entry key="Odepnij pasek narzędziowy" value="false"/>
+        <entry key="Odepnij pasek narzędziowy" value="true"/>
         <entry key="Zablokuj pasek narzędziowy" value="false"/>
         <entry key="Tryb ciemny" value="false"/>
+        <entry key="width" value="650"/>
+        <entry key="height" value="550"/>
       </map>
     </node>
   </root>

@@ -5,14 +5,14 @@ import java.awt.event.ActionListener;
 public class MainMenu extends JMenuBar implements ActionListener {
     JFrame win;
     JPanel panel;
-    JMenu Files, SubMenu;
+    JMenu File, SubMenu;
     JMenuItem New, Open, Save, Setting, Exit, Option4, Option5;
 
     MainMenu(JFrame win, JPanel panel){
         this.panel = panel;
         this.win = win;
 
-        Files = new JMenu("Files");
+        File = new JMenu("File");
         SubMenu = new JMenu("SubMenu");
         New = new JMenuItem("New");
         Open = new JMenuItem("Open");
@@ -33,14 +33,14 @@ public class MainMenu extends JMenuBar implements ActionListener {
         SubMenu.add(Option4);
         SubMenu.add(Option5);
 
-        Files.add(New);
-        Files.add(Open);
-        Files.add(Save);
-        Files.add(Setting);
-        Files.add(SubMenu);
-        Files.add(Exit);
+        File.add(New);
+        File.add(Open);
+        File.add(Save);
+        File.add(Setting);
+        File.add(SubMenu);
+        File.add(Exit);
 
-        this.add(Files);
+        this.add(File);
     }
 
     @Override
