@@ -1,26 +1,29 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 
 public class MainMenu extends JMenuBar implements ActionListener {
     JFrame win;
     JPanel panel;
     JMenu File, SubMenu;
     JMenuItem New, Open, Save, Setting, Exit, Option4, Option5;
+    ResourceBundle resourceBundle;
 
-    MainMenu(JFrame win, JPanel panel){
+    MainMenu(JFrame win, JPanel panel, ResourceBundle resourceBundle){
+        this.resourceBundle = resourceBundle;
         this.panel = panel;
         this.win = win;
 
-        File = new JMenu("File");
-        SubMenu = new JMenu("SubMenu");
-        New = new JMenuItem("New");
-        Open = new JMenuItem("Open");
-        Save = new JMenuItem("Save");
-        Setting = new JMenuItem("Setting");
-        Exit = new JMenuItem("Exit");
-        Option4 = new JMenuItem("Option4");
-        Option5 = new JMenuItem("Option5");
+        File = new JMenu(resourceBundle.getString("MainMenu-File"));
+        SubMenu = new JMenu(resourceBundle.getString("MainMenu-Submenu"));
+        New = new JMenuItem(resourceBundle.getString("MainMenu-New"));
+        Open = new JMenuItem(resourceBundle.getString("MainMenu-Open"));
+        Save = new JMenuItem(resourceBundle.getString("MainMenu-Save"));
+        Setting = new JMenuItem(resourceBundle.getString("MainMenu-Setting"));
+        Exit = new JMenuItem(resourceBundle.getString("MainMenu-Exit"));
+        Option4 = new JMenuItem(resourceBundle.getString("MainMenu-Option4"));
+        Option5 = new JMenuItem(resourceBundle.getString("MainMenu-Option5"));
 
         New.addActionListener(this);
         Open.addActionListener(this);
@@ -50,7 +53,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
             win.dispose();
         }
         if(src == Setting){
-            new AppSettings(true, win);
+            new AppSettings(true, win, resourceBundle);
         }
     }
 }

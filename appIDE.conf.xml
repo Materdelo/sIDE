@@ -12,11 +12,12 @@
         <entry key="Zapamiętaj katalog przeglądania" value="false"/>
         <entry key="Zapamiętaj otwarty plik" value="false"/>
         <entry key="Ukryj menu główne" value="false"/>
-        <entry key="Odepnij pasek narzędziowy" value="true"/>
+        <entry key="Odepnij pasek narzędziowy" value="false"/>
         <entry key="Zablokuj pasek narzędziowy" value="false"/>
         <entry key="Tryb ciemny" value="false"/>
-        <entry key="width" value="650"/>
-        <entry key="height" value="550"/>
+        <entry key="width" value="1139"/>
+        <entry key="height" value="573"/>
+        <entry key="Language" value="0"/>
       </map>
     </node>
   </root>

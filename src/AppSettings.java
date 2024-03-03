@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -24,46 +25,28 @@ public class AppSettings extends JDialog {
     private JLabel availableSettingLabel;
     private JFrame win;
 
-    public AppSettings(JFrame win, JMenuBar jMenuBar, JToolBar jToolBar) {
-        this.win = win;
+    public AppSettings() {
         readPreferences();
-        if(hashMap.get("Zapamiętaj rozmiar")){
-            prefLd = Preferences.userRoot().node(NDDE);
-            win.setSize(Integer.parseInt(prefLd.get("width", null)), Integer.parseInt(prefLd.get("height", null)));
-        }
-        if(hashMap.get("Uruchom wyśrodkowane")) {
-            win.setLocationRelativeTo(null);
-        }
-        if(hashMap.get("Uruchom zmaksymalizowane")) {
-            win.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        }
-        if(hashMap.get("Ukryj menu główne")){
-            jMenuBar.setVisible(false);
-        }
-        if(hashMap.get("Odepnij pasek narzędziowy")){
-            jToolBar.setFloatable(true);
-        }
-
     }
 
-    public AppSettings(Boolean showGui, JFrame win) {
+    public AppSettings(Boolean showGui, JFrame win, ResourceBundle resourceBundle) {
         this.win = win;
         readPreferences();
-        saveButton = new JButton("Zapisz");
+        saveButton = new JButton(resourceBundle.getString("Setting-Save"));
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 savePreferences();
             }
         });
-        cancelButton = new JButton("Odrzuć");
+        cancelButton = new JButton(resourceBundle.getString("Setting-Discard"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeWindow();
             }
         });
-        availableSettingLabel = new JLabel("Dostępne ustawienia");
+        availableSettingLabel = new JLabel(resourceBundle.getString("Setting-AvailbleSetting"));
 
         savePanel = new JPanel();
         mainPanel = new JPanel();
@@ -76,13 +59,13 @@ public class AppSettings extends JDialog {
         savePanel.add(saveButton);
 
         mainPanel.add(savePanel);
-        mainPanel.add(new WindowPanel());
-        mainPanel.add(new IDEPanel());
-        mainPanel.add(new GUIPanel());
+        mainPanel.add(new WindowPanel(resourceBundle));
+        mainPanel.add(new IDEPanel(resourceBundle));
+        mainPanel.add(new GUIPanel(resourceBundle));
         add(mainPanel);
 
         setCheckbox(hashMap);
-        setTitle("Settings");
+        setTitle(resourceBundle.getString("Setting-Title"));
         setSize(300, 500);
         setLocation(50, 25);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -109,6 +92,30 @@ public class AppSettings extends JDialog {
         dispose();
     }
 
+    public Integer getIndexLanguage() {
+        prefLd = Preferences.userRoot().node(NDDE);
+        return Integer.parseInt(prefLd.get("Language", null));
+    }
+    public void setSettings(JFrame win, JMenuBar jMenuBar, JToolBar jToolBar) {
+        this.win = win;
+        readPreferences();
+        if(hashMap.get("Zapamiętaj rozmiar")){
+            prefLd = Preferences.userRoot().node(NDDE);
+            win.setSize(Integer.parseInt(prefLd.get("width", null)), Integer.parseInt(prefLd.get("height", null)));
+        }
+        if(hashMap.get("Uruchom wyśrodkowane")) {
+            win.setLocationRelativeTo(null);
+        }
+        if(hashMap.get("Uruchom zmaksymalizowane")) {
+            win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        if(hashMap.get("Ukryj menu główne")){
+            jMenuBar.setVisible(false);
+        }
+        if(hashMap.get("Odepnij pasek narzędziowy")){
+            jToolBar.setFloatable(true);
+        }
+    }
     private void readPreferences() {
         hashMap = new HashMap<>();
         try {
@@ -130,7 +137,12 @@ public class AppSettings extends JDialog {
                 for (Component subComponent : subComponents) {
                     if (subComponent instanceof JCheckBox) {
                         JCheckBox checkBox = (JCheckBox) subComponent;
-                        prefs.put(checkBox.getText(), String.valueOf(checkBox.isSelected()));
+                        String settingKey = checkBox.getActionCommand();
+                        prefs.put(settingKey, String.valueOf(checkBox.isSelected()));
+                    }
+                    else if(subComponent instanceof JComboBox){
+                        JComboBox comboBox = (JComboBox) subComponent;
+                        prefs.put("Language", String.valueOf(comboBox.getSelectedIndex()));
                     }
                 }
             }
@@ -138,13 +150,20 @@ public class AppSettings extends JDialog {
     }
 
     private void setCheckbox(HashMap<String, Boolean> hashMap) {
+        System.out.println(hashMap);
         Component[] components = mainPanel.getComponents();
         for (Component component : components) {
             if (component instanceof JPanel subPanel) {
                 Component[] subComponents = subPanel.getComponents();
                 for (Component subComponent : subComponents) {
                     if (subComponent instanceof JCheckBox checkBox) {
-                        checkBox.setSelected(hashMap.get(checkBox.getText()));
+                        System.out.println(checkBox.getText());
+                        String settingKey = checkBox.getActionCommand();
+                        checkBox.setSelected(hashMap.get(settingKey));
+                    }
+                    else if(subComponent instanceof JComboBox comboBox){
+                        prefLd = Preferences.userRoot().node(NDDE);
+                        comboBox.setSelectedIndex(Integer.parseInt(prefLd.get("Language", null)));
                     }
                 }
             }
